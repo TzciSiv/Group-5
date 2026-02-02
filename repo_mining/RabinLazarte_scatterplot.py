@@ -1,9 +1,9 @@
 import numpy as np
-from RabinLazarte_CollectFiles import dictfiles
+from RabinLazarte_FileTouches import dictfiles
 import matplotlib.pyplot as plt
 from datetime import datetime
 import matplotlib.cm as cm
-    
+
 all_dates = {
     datetime.fromisoformat(t["date"].replace("Z"," +00:00"))
     for touches in dictfiles.values()
@@ -22,12 +22,12 @@ authors = []
 
 for filename, touches in dictfiles.items():
     for t in touches:
-        x.append(week_number(all_dates))
+        x.append(week_number(datetime.fromisoformat(t["date"].replace("Z"," +00:00"))))
         y.append(len(touches))
-        authors.append(t["author"])
+        authors.append(t["author"]) 
     
 uniqueAuthors = list(set(authors))
-cmap = cm.get_cmap("Lab20", len(uniqueAuthors))
+cmap = cm.get_cmap("tab20", len(uniqueAuthors))
 authorColor = {a: cmap(i) for i, a in enumerate(uniqueAuthors)}
 colors = [authorColor[a] for a in authors]
 
@@ -39,6 +39,6 @@ plt.ylabel("file")
 plt.title("File touches per week")
 
 for i, a in enumerate(uniqueAuthors):
-    plt.scatter([], [], color=cmap[i], label=a)
-plt.tight_layout
+    plt.scatter([], [], color=cmap(i), label=a)
+plt.tight_layout()
 plt.show()
