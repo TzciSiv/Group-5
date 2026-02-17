@@ -277,3 +277,27 @@ class TestCounterEndpoints:
         assert response.status_code == HTTPStatus.BAD_REQUEST
 
         # TODO: Add an assertion to verify the error message specifically says 'Invalid counter name'S
+
+    # ===========================
+    # Test: Ensure API returns consistent JSON types across Python versions
+    # Author: Tszchoi Siu
+    # Modification: Ensure stable integer handling and consistent API structure
+    # ===========================
+    def test_json_response_type_consistency(self, client):
+        """Ensure API returns consistent JSON types across Python versions"""
+        
+        client.post('/counters/reset')
+        client.post('/counters/a')
+        client.put('/counters/a/set/5')
+
+        response = client.get('/counters/a')
+
+        assert response.status_code == HTTPStatus.OK
+
+        data = response.get_json()
+
+        # Ensure value is strictly an integer
+        assert isinstance(data["a"], int)
+
+        # Ensure JSON structure is exactly as expected
+        assert data == {"a": 5}
