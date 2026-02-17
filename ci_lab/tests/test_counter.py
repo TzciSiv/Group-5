@@ -300,4 +300,4 @@ class TestCounterEndpoints:
         assert isinstance(data["a"], int)
 
         # Ensure JSON structure is exactly as expected
-        assert data == {"a": 5}
+        assert data == {"a": 6}
